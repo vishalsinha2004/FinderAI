@@ -18,7 +18,7 @@ function App() {
     const savedMode = localStorage.getItem('darkMode');
     return savedMode ? JSON.parse(savedMode) : true;
   });
-  const [code, setCode] = useState(`// Welcome to FinderAI Code Reviewer!\n// Write your code here and click "Get Review"`);
+  const [code, setCode] = useState(`// Welcome to FinderAI Reviewer!\n// Write your Contain here and click "Get Review"`);
   const [loading, setLoading] = useState(false);
   const [review, setReview] = useState('');
 
@@ -57,7 +57,7 @@ function App() {
       <nav className="navbar">
         <div className="navbar-brand">
           <img src={logo} alt="Finder Logo" className="logo-img" />
-          <span>FinderAI</span>
+          <span>FinderAI...</span>
         </div>
         <div className="navbar-actions">
           <button className="copy-button" onClick={copyToClipboard} aria-label="Copy code">
@@ -140,8 +140,8 @@ function App() {
           ) : (
             <div className="placeholder">
               <RiRobot2Line size={48} className="rgb-animate" />
-              <h3>Code Review Output</h3>
-              <p>Your AI-powered code review will appear here after you click the "Get Review" button</p>
+              <h3>Review Output</h3>
+              <p>Your AI-powered Finder... review will appear here after you click the "Get Review" button</p>
             </div>
           )}
         </div>
