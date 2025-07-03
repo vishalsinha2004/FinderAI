@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
-import "prismjs/themes/prism-tomorrow.css";
-import Editor from "react-simple-code-editor";
-import prism from "prismjs";
-import Markdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/github-dark.css";
-import axios from 'axios';
-import './App.css';
+import { FiSun, FiMoon, FiCopy, FiSearch } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FiSun, FiMoon, FiCopy, FiSearch } from 'react-icons/fi';
+import 'highlight.js/styles/github-dark.css';
 import logo from './assets/fm.png';
+import './App.css';
 
 function App() {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) return savedTheme === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
   const [code, setCode] = useState(`function sum() {
   return 1 + 1
 }`);
@@ -21,8 +20,8 @@ function App() {
   const [review, setReview] = useState('');
 
   useEffect(() => {
-    prism.highlightAll();
-    document.body.className = darkMode ? 'dark-mode' : 'light-mode';
+    document.body.className = darkMode ? 'dark' : 'light';
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
   async function reviewCode() {
@@ -33,11 +32,41 @@ function App() {
 
     try {
       setLoading(true);
-      const response = await axios.post('https://solvinger-v1.onrender.com/ai/get-review', { code });
-      setReview(response.data.message || response.data || "No review available.");
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Mock response
+      const mockResponse = `
+Here's a review of your code:
+
+\`\`\`javascript
+${code}
+\`\`\`
+
+### Suggestions:
+1. The function \`sum()\` is very simple and always returns 2.
+2. Consider making it more dynamic by accepting parameters:
+   \`\`\`javascript
+   function sum(a, b) {
+     return a + b;
+   }
+   \`\`\`
+3. Add error handling if needed.
+4. Consider adding JSDoc comments for documentation.
+
+### Potential Issues:
+- None found in this simple example.
+
+### Performance:
+- The function has O(1) time complexity, which is optimal.
+      `;
+
+      setReview(mockResponse);
     } catch (error) {
       console.error("Error fetching review:", error);
       toast.error("An error occurred while fetching the review.");
+      setReview('');
     } finally {
       setLoading(false);
     }
@@ -49,12 +78,19 @@ function App() {
       .catch(() => toast.error("Failed to copy code"));
   };
 
+  const getLineCount = () => code.split('\n').length;
+  const getCharCount = () => code.length;
+
   return (
     <>
       <nav className="navbar">
         <div className="navbar-brand">
-          <img src={logo} alt="Finder Logo" className="logo-img" />
-          <span>FinderAI...</span>
+          <img 
+            src={logo} 
+            alt="Finder Logo" 
+            className="logo-img" 
+          />
+          <span className="finder-text">FinderAI...</span>
         </div>
         <div className="navbar-actions">
           <button className="copy-button" onClick={copyToClipboard}>
@@ -66,32 +102,18 @@ function App() {
         </div>
       </nav>
 
-      <main className={darkMode ? 'dark' : 'light'}>
+      <main>
         <ToastContainer position="top-right" autoClose={3000} />
         
         <div className="left">
-          <div className="code">
-            <Editor
-              value={code}
-              onValueChange={setCode}
-              highlight={code => prism.highlight(code, prism.languages.javascript, "javascript")}
-              padding={15}
-              style={{
-                fontFamily: '"Fira code", "Fira Mono", monospace',
-                fontSize: 16,
-                backgroundColor: darkMode ? '#0c0c0c' : '#f8f8f8',
-                color: darkMode ? '#f8f8f2' : '#333',
-                border: darkMode ? "1px solid #333" : "1px solid #ddd",
-                borderRadius: "0.7rem",
-                height: "100%",
-                width: "100%",
-                overflow: "auto",
-                lineHeight: '1.5',
-              }}
-            />
-          </div>
+          <textarea
+            className="code-editor"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            spellCheck="false"
+          />
           <div className="code-info">
-            {code.split('\n').length} lines | {code.length} chars
+            {getLineCount()} lines | {getCharCount()} chars
           </div>
           <button
             onClick={reviewCode}
@@ -117,9 +139,7 @@ function App() {
         
         <div className="right">
           {review ? (
-            <Markdown rehypePlugins={[rehypeHighlight]}>
-              {review}
-            </Markdown>
+            <div dangerouslySetInnerHTML={{ __html: review }} />
           ) : (
             <div className="placeholder">
               <h3>Code Review Output</h3>

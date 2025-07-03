@@ -12,6 +12,10 @@ body,
   width: 100%;
 }
 
+:root {
+  --finder-gradient: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+}
+
 .dark {
   --bg-color: #242424;
   --text-color: rgba(255, 255, 255, 0.87);
@@ -40,7 +44,7 @@ body,
   --button-hover: #535bf2;
   --nav-bg: #f9f9f9;
   --nav-text: #213547;
-  --logo-filter: brightness(0) invert(0);
+  --logo-filter: none;
   --button-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
 }
 
@@ -67,6 +71,13 @@ body {
   align-items: center;
   gap: 0.75rem;
   font-size: 1.2rem;
+}
+
+.finder-text {
+  background: var(--finder-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-weight: 600;
 }
 
@@ -75,10 +86,10 @@ body {
   width: 36px;
   border-radius: 50%;
   object-fit: cover;
-  filter: var(--logo-filter);
   transition: all 0.3s ease;
   border: 2px solid var(--button-bg);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  filter: var(--logo-filter);
 }
 
 .navbar-actions {
@@ -133,14 +144,20 @@ main .left {
   position: relative;
 }
 
-.left .code,
-.code pre,
-.code pre code {
+.code-editor {
   height: calc(100% - 2rem);
   width: 100%;
   margin: 0;
   border-radius: 0.7rem;
   background-color: var(--editor-bg);
+  color: var(--editor-text);
+  padding: 15px;
+  font-family: '"Fira code", "Fira Mono", monospace';
+  font-size: 16px;
+  line-height: 1.5;
+  border: 1px solid var(--editor-border);
+  outline: none;
+  resize: none;
 }
 
 .code-info {
@@ -271,6 +288,12 @@ main .right {
 .right::-webkit-scrollbar-thumb {
   background-color: rgba(155, 155, 155, 0.5);
   border-radius: 4px;
+}
+
+/* Toast Styles */
+.Toastify__toast {
+  border-radius: 0.5rem !important;
+  font-family: inherit !important;
 }
 
 /* Responsive Styles */
