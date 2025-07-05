@@ -12,19 +12,13 @@ import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
   const [ count, setCount ] = useState(0)
-  const [ code, setCode ] = useState(` function sum() {
-  return 1 + 1
-}`)
-
-
-const [loading, setLoading] = useState(false);
-
+  const [ code, setCode ] = useState(``) // Removed the default sum function
+  const [loading, setLoading] = useState(false);
   const [ review, setReview ] = useState(``)
 
   useEffect(() => {
     prism.highlightAll()
   }, [])
-  //http://localhost:3000
 
   async function reviewCode() {
     try {
@@ -79,20 +73,16 @@ const [loading, setLoading] = useState(false);
           </div>
           <div
             onClick={reviewCode}
-            className="review">{loading ? "Solvining..." : (code === null ? "Write Something" : "🔍")}</div>
+            className="review">{loading ? " Deep Analyzing" : (code === null ? "Write Something" : " Search ")}</div>
         </div>
         <div className="right">
           <Markdown
             rehypePlugins={[ rehypeHighlight ]}
-
           >{review}</Markdown>
         </div>
-        
       </main>
     </>
   )
 }
-
-
 
 export default App
