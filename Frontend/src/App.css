@@ -1,6 +1,6 @@
 * {
-  margin: 0;
-  padding: 0;
+  margin: 0%;
+  padding: 0%;
   box-sizing: border-box;
 }
 
@@ -17,6 +17,31 @@ main {
   padding: 1.5rem;
   display: flex;
   gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  main .left,
+  main .right {
+    flex-basis: 100%;
+    height: 50%;
+  }
+
+  main .right {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  main .left .review {
+    bottom: 0.5rem;
+    right: 0.5rem;
+    padding: 0.3rem 1rem;
+    font-size: 0.9rem;
+  }
 }
 
 main .left,
@@ -50,38 +75,14 @@ main .left .review {
   padding: 0.8rem 3rem;
   font-weight: 500;
   cursor: pointer;
-  user-select: none;
+  user-select: none;  
   border-radius: 0.7rem;
 }
 
+ 
 main .right {
   background-color: #01040e;
   padding: 1rem 2rem;
   font-size: 1.5rem;
   overflow: auto;
-}
-
-@media (max-width: 768px) {
-  main {
-    flex-direction: column;
-    padding: 1rem;
-  }
-
-  main .left,
-  main .right {
-    flex-basis: 100%;
-    height: 50%;
-  }
-
-  main .right {
-    padding: 1rem;
-    font-size: 1rem;
-  }
-
-  main .left .review {
-    bottom: 0.5rem;
-    right: 0.5rem;
-    padding: 0.3rem 1rem;
-    font-size: 0.9rem;
-  }
 }
