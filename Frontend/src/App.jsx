@@ -73,7 +73,7 @@ function App() {
           </div>
           <div
             onClick={reviewCode}
-            className="review">{loading ? " Deep Analyzing" : (code === null ? "Write Something" : " Search ")}</div>
+            className="review">{loading ? " Deep Analyzing..." : (code === null ? "Write Something" : " Search ")}</div>
         </div>
         <div className="right">
           <Markdown
