@@ -49,13 +49,22 @@ main .left .review {
   position: absolute;
   bottom: 2rem;
   right: 2rem;
-  background-color: rgb(219, 219, 255);
-  color: #000000; /* Keep button text black for contrast */
+  background-color: rgba(219, 219, 255, 0.2);
+  color: #ffffff;
   padding: 0.8rem 3rem;
   font-weight: 500;
   cursor: pointer;
   user-select: none;
   border-radius: 0.7rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+main .left .review:hover {
+  background-color: rgba(219, 219, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 main .right {
@@ -89,6 +98,7 @@ main .right {
     right: 0.5rem;
     padding: 0.3rem 1rem;
     font-size: 0.9rem;
-    color: #000000; /* Keep button text black */
+    color: #ffffff;
+    backdrop-filter: blur(5px);
   }
 }
