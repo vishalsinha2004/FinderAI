@@ -11,23 +11,29 @@ import './App.css'
 import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
-  const [ count, setCount ] = useState(0)
-  const [ code, setCode ] = useState(``) // Removed the default sum function
+  const [count, setCount] = useState(0)
+  const [code, setCode] = useState(``)
   const [loading, setLoading] = useState(false);
-  const [ review, setReview ] = useState(``)
+  const [review, setReview] = useState(``)
 
   useEffect(() => {
     prism.highlightAll()
+    // Set welcome message when component mounts
+    setReview(`# Welcome to FinderAI...! 👋\n\nStart by writing some Code & Question in the editor and click "Search" to get an FinderAI...\n\n### Features:\n- Code analysis\n- Answer Solving\n- Best practices\n- Error detection 🚀`);
   }, [])
 
   async function reviewCode() {
     try {
+      if (!code.trim()) {
+        toast.warning("Please write some code first!");
+        return;
+      }
+
       setLoading(true);
       const response = await axios.post('https://solvinger-v1.onrender.com/ai/get-review', { code });
-  
-      // Safely handle the response
+
       if (response.data) {
-        setReview(response.data.message || response.data); // Use `message` if available, fallback to `data`
+        setReview(response.data.message || response.data);
       } else {
         setReview("No review available.");
       }
@@ -43,16 +49,12 @@ function App() {
     if (review) {
       setLoading(false);
     }
-
-    if (review == null) {
-      setLoading(false);
-    }
   }, [review]);
 
   return (
     <>
       <main>
-      <ToastContainer />
+        <ToastContainer />
         <div className="left">
           <div className="code">
             <Editor
@@ -73,11 +75,10 @@ function App() {
           </div>
           <div
             onClick={reviewCode}
-            className="review">{loading ? " Deep Analyzing..." : (code === null ? "Write Something" : " Search ")}</div>
-        </div>
+            className="review">{loading ? " Deep Search..." : (code === null ? "Write Something" : " Search ")}</div>        </div>
         <div className="right">
           <Markdown
-            rehypePlugins={[ rehypeHighlight ]}
+            rehypePlugins={[rehypeHighlight]}
           >{review}</Markdown>
         </div>
       </main>
