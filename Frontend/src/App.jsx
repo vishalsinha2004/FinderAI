@@ -17,11 +17,9 @@ function App() {
   const [review, setReview] = useState(``)
 
   useEffect(() => {
-    prism.highlightAll()
-    // Set welcome message when component mounts
-    setReview(`# Welcome to FinderAI...! 👋\n\nStart by writing some Code & Question in the editor and click "Search" to get an FinderAI...\n\n### Features:\n- Code analysis\n- Answer Solving\n- Best practices\n- Error detection 🚀`);
-  }, [])
-
+  prism.highlightAll();
+  setReview(`# Welcome to FinderAI! 👋\n\nStart by writing your **code** or **question** in the editor and click "Search" to get AI-powered assistance.\n\n### Key Features:\n\n✅ **Code Analysis** - Get detailed reviews of your code\n\n✅ **Problem Solving** - Find solutions to programming challenges\n\n✅ **Best Practices** - Learn industry-standard approaches\n\n✅ **Error Detection** - Identify and fix issues in your code\n\n*Tip: Try writing a function or ask a coding question to begin!* 🚀`);
+}, []);
   async function reviewCode() {
     try {
       if (!code.trim()) {

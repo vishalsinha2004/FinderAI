@@ -102,3 +102,69 @@ main .right {
     backdrop-filter: blur(5px);
   }
 }
+
+/* Add these to your existing CSS */
+
+.right {
+  background-color: #01040e;
+  padding: 1rem;
+  font-size: 1rem; /* Start with base font size */
+  overflow: auto;
+  color: #ffffff;
+}
+
+/* Responsive typography for markdown content */
+.right h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.right h3 {
+  font-size: 1.3rem;
+  margin: 1.5rem 0 0.8rem;
+}
+
+.right p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.right ul {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.right li {
+  margin-bottom: 0.5rem;
+}
+
+/* Make emojis slightly larger */
+.right .emoji {
+  font-size: 1.1em;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .right {
+    padding: 1.5rem 2rem;
+    font-size: 1.1rem;
+  }
+  
+  .right h1 {
+    font-size: 2rem;
+  }
+  
+  .right h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .right {
+    font-size: 1.2rem;
+  }
+  
+  .right h1 {
+    font-size: 2.2rem;
+  }
+}
