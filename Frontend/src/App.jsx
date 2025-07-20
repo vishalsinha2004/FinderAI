@@ -6,89 +6,37 @@ import Markdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import './App.css';
 
 function App() {
-  const [code, setCode] = useState(``);
+  const [code, setCode] = useState(''); // Now starts empty
   const [loading, setLoading] = useState(false);
-  const [review, setReview] = useState(``);
+  const [review, setReview] = useState('');
   const [showWelcome, setShowWelcome] = useState(true);
-  const [typedText, setTypedText] = useState('');
-  const [cursorVisible, setCursorVisible] = useState(true);
-  const [particles, setParticles] = useState([]);
-  const welcomeText = " FinderAI... ";
-
-  // Create floating particles
-  useEffect(() => {
-    if (!showWelcome) return;
-    
-    const particleCount = window.innerWidth < 768 ? 15 : 30;
-    const newParticles = Array.from({ length: particleCount }).map(() => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 5 + 2,
-      speedX: Math.random() * 0.5 - 0.25,
-      speedY: Math.random() * 0.5 - 0.25,
-      color: Math.random() > 0.5 ? 'rgba(253, 200, 48, 0.7)' : 'rgba(243, 115, 53, 0.7)'
-    }));
-    setParticles(newParticles);
-
-    const moveParticles = () => {
-      setParticles(prev => prev.map(p => ({
-        ...p,
-        x: (p.x + p.speedX) % 100,
-        y: (p.y + p.speedY) % 100
-      })));
-    };
-
-    const interval = setInterval(moveParticles, 50);
-    return () => clearInterval(interval);
-  }, [showWelcome]);
 
   useEffect(() => {
     prism.highlightAll();
     
     if (sessionStorage.getItem('visited') === 'true') {
       setShowWelcome(false);
+     setReview(`# Welcome to FinderAI ✨\n\nYour AI-powered coding assistant is ready to help with:\n\n🔍 **Code Review** - Find bugs and optimize your code\n📚 **Learning** - Get explanations for programming concepts\n💡 **Solutions** - Receive implementations for coding problems\n\n## How to use:\n1. Write your code in the editor below\n2. Click the "Search" button\n3. Get instant AI-powered analysis\n\n### Try these examples:\n\n\`\`\`javascript\n// 1. Find bugs in this function\nfunction calculateSum(arr) {\n  let sum = 0;\n  for (let i = 0; i <= arr.length; i++) {\n    sum += arr[i];\n  }\n  return sum;\n}\n\`\`\`\n\n\`\`\`python\n# 2. Optimize this Python code\ndef factorial(n):\n    if n == 0:\n        return 1\n    else:\n        return n * factorial(n-1)\n\`\`\`\n\nOr ask questions like:\n\n* "Explain how recursion works in JavaScript"\n* "Show me how to implement a binary search in Python"\n* "What's wrong with this React component?"\n\n💡 **Tip**: The more specific your question, the better the answer!`);
     } else {
-      setReview(`# Welcome to FinderAI! 👋\n\nStart by writing your **code** or **question** in the editor and click "Search" to get AI-powered assistance.\n\n### Key Features:\n\n✅ **Code Analysis** - Get detailed reviews of your code\n\n✅ **Problem Solving** - Find solutions to programming challenges\n\n✅ **Best Practices** - Learn industry-standard approaches\n\n✅ **Error Detection** - Identify and fix issues in your code\n\n*Tip: Try writing a function or ask a coding question to begin!* 🚀`);
-      
-      // Typing animation with enhanced effects
-      let i = 0;
-      const typingInterval = setInterval(() => {
-        if (i < welcomeText.length) {
-          setTypedText(prev => prev + welcomeText.charAt(i));
-          i++;
-        } else {
-          clearInterval(typingInterval);
-          setInterval(() => setCursorVisible(prev => !prev), 500);
-        }
-      }, 100);
-
-      // Pulse animation for loading text
-      const loadingText = document.querySelector('.welcome-page p');
-      if (loadingText) {
-        loadingText.style.animation = 'pulse 2s infinite';
-      }
-
-      // Auto-enter after animation completes
       const timer = setTimeout(() => {
         sessionStorage.setItem('visited', 'true');
         setShowWelcome(false);
-      }, welcomeText.length * 100 + 1500);
+         setReview(`# Welcome to FinderAI ✨\n\nYour AI-powered coding assistant is ready to help with:\n\n🔍 **Code Review** - Find bugs and optimize your code\n📚 **Learning** - Get explanations for programming concepts\n💡 **Solutions** - Receive implementations for coding problems\n\n## How to use:\n1. Write your code in the editor below\n2. Click the "Search" button\n3. Get instant AI-powered analysis\n\n### Try these examples:\n\n\`\`\`javascript\n// 1. Find bugs in this function\nfunction calculateSum(arr) {\n  let sum = 0;\n  for (let i = 0; i <= arr.length; i++) {\n    sum += arr[i];\n  }\n  return sum;\n}\n\`\`\`\n\n\`\`\`python\n# 2. Optimize this Python code\ndef factorial(n):\n    if n == 0:\n        return 1\n    else:\n        return n * factorial(n-1)\n\`\`\`\n\nOr ask questions like:\n\n* "Explain how recursion works in JavaScript"\n* "Show me how to implement a binary search in Python"\n* "What's wrong with this React component?"\n\n💡 **Tip**: The more specific your question, the better the answer!`);
+      
+      }, 1500);
 
-      return () => {
-        clearInterval(typingInterval);
-        clearTimeout(timer);
-      };
+      return () => clearTimeout(timer);
     }
   }, []);
 
   async function reviewCode() {
     try {
       if (!code.trim()) {
-        toast.warning("Please write some code first!");
+        toast.warning("Please write some code or ask a question first!");
         return;
       }
 
@@ -98,11 +46,12 @@ function App() {
       if (response.data) {
         setReview(response.data.message || response.data);
       } else {
-        setReview("No review available.");
+        setReview("## No response received\n\nPlease try again or check your connection.");
       }
     } catch (error) {
       console.error("Error fetching review:", error);
-      toast.error("An error occurred while fetching the review.");
+      toast.error("Failed to get analysis. Please try again.");
+      setReview(`## Error Occurred\n\nWe couldn't process your request. Possible issues:\n\n- Network connection problem\n- Server temporarily unavailable\n- Your code might be too large\n\n\`\`\`\n${error.message}\n\`\`\``);
     } finally {
       setLoading(false);
     }
@@ -112,67 +61,57 @@ function App() {
     <>
       {showWelcome ? (
         <div className="welcome-page">
-          {/* Floating particles */}
-          {particles.map((p, i) => (
-            <div 
-              key={i}
-              className="particle"
-              style={{
-                left: `${p.x}%`,
-                top: `${p.y}%`,
-                width: `${p.size}px`,
-                height: `${p.size}px`,
-                background: p.color,
-                borderRadius: '50%',
-                position: 'absolute',
-                filter: 'blur(1px)'
-              }}
-            />
-          ))}
-          
           <div className="welcome-content">
-            <h1>
-              {typedText}
-              <span style={{ opacity: cursorVisible ? 1 : 0 }}>|</span>
-            </h1>
+            <h1>FinderAI...</h1>
             <p>Your AI-powered coding assistant is loading...</p>
             <div className="loading-bar">
               <div className="loading-progress"></div>
             </div>
-            
           </div>
         </div>
       ) : (
-        <main>
-          <ToastContainer />
-          <div className="left">
+        <div className="app-container">
+          <ToastContainer 
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
+          <div className="editor-container">
             <div className="code">
               <Editor
-                value={code}
-                onValueChange={code => setCode(code)}
-                highlight={code => prism.highlight(code, prism.languages.javascript, "javascript")}
-                padding={10}
-                style={{
-                  fontFamily: '"Fira code", "Fira Mono", monospace',
-                  fontSize: 16,
-                  border: "1px solid #ddd",
-                  borderRadius: "5px",
-                  height: "100%",
-                  width: "100%",
-                  overflow: "scroll"
-                }}
-              />
+  value={code}
+  onValueChange={code => setCode(code)}
+  highlight={code => prism.highlight(code, prism.languages.javascript, "javascript")}
+  padding={20}
+  placeholder="Enter your code here or ask a coding question..."
+  style={{
+    fontFamily: '"Fira code", "Fira Mono", monospace',
+    fontSize: 16,
+    backgroundColor: '#0c0c0c',
+    height: "100%",
+    width: "100%",
+  }}
+/>
             </div>
-            <div
+            <button
               onClick={reviewCode}
-              className="review">
-              {loading ? " Deep Search..." : (code === null ? "Write Something" : " Search ")}
-            </div>
+              className="review"
+              disabled={loading}
+            >
+              {loading ? "Deep Searching ..." : "Search"}
+            </button>
           </div>
-          <div className="right">
+          <div className="results-container">
             <Markdown rehypePlugins={[rehypeHighlight]}>{review}</Markdown>
           </div>
-        </main>
+        </div>
       )}
     </>
   );
