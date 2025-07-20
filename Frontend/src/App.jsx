@@ -92,14 +92,15 @@ function App() {
                 onValueChange={code => setCode(code)}
                 highlight={code => prism.highlight(code, prism.languages.javascript, "javascript")}
                 padding={20}
-                placeholder="Enter your code here or ask a coding question..."
+                placeholder="Write code. Ask questions. Solve anything."
                 style={{
                   fontFamily: '"Fira code", "Fira Mono", monospace',
                   fontSize: 16,
                   backgroundColor: '#0c0c0c',
-                  height: "100%",
+                  minHeight: "100%",
                   width: "100%",
                 }}
+                textareaClassName="code-textarea"
               />
             </div>
             <button

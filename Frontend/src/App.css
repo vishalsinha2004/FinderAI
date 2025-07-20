@@ -79,7 +79,9 @@ body,
 }
 
 .editor-container {
-  height: 20%;
+  height: auto;
+  min-height: 20%;
+  max-height: 50vh;
   background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
@@ -88,12 +90,40 @@ body,
   position: sticky;
   bottom: 0;
   z-index: 100;
+  overflow: hidden;
 }
 
 .editor-container .code {
   flex-grow: 1;
   overflow: auto;
   padding: 1rem;
+  max-height: 80vh;
+}
+
+.editor-container .code::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.editor-container .code::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+
+.editor-container .code::-webkit-scrollbar-track {
+  background-color: #1a1a1a;
+}
+
+.code-textarea {
+  outline: none;
+  overflow-y: auto !important;
+  min-height: 100px;
+  resize: none;
+}
+
+.code {
+  scrollbar-width: thin;
+  scrollbar-color: #444 #1a1a1a;
 }
 
 .prism-editor__editor {
@@ -191,7 +221,7 @@ body,
 
 @media (max-width: 768px) {
   .editor-container {
-    height: 25%;
+    min-height: 25%;
   }
   
   .results-container {
@@ -211,7 +241,7 @@ body,
 
 @media (max-width: 480px) {
   .editor-container {
-    height: 25%;
+    min-height: 25%;
   }
 
   .results-container h1 {
