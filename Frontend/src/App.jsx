@@ -83,7 +83,11 @@ function App() {
             theme="dark"
           />
           <div className="results-container">
-            <Markdown rehypePlugins={[rehypeHighlight]}>{review}</Markdown>
+            {loading ? (
+              <div className="output-loading"></div>
+            ) : (
+              <Markdown rehypePlugins={[rehypeHighlight]}>{review}</Markdown>
+            )}
           </div>
           <div className="editor-container">
             <div className="code">
